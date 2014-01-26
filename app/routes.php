@@ -11,5 +11,5 @@
 |
 */
 
-Route::Controller('/', 'HomeController');
-Route::Controller('auth', 'AuthController');
+Route::get('/', 'HomeController@getIndex');
+Route::controller('auth', 'AuthController');
