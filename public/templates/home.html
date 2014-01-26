@@ -1,6 +1,17 @@
 <div id="home" class="row">
   <div class="large-12 columns">
-    <h2> {{ Home }} </h2>
+  <div class="alert-box info radius"> {{ message }}</div>
+    <h2> {{ title }} </h2>
       <p>Content inserted around this area.</p>
+      <ul>
+        <li shows-message-when-hovered message="I am a student one.">Student One,</li>
+        <li shows-message-when-hovered message="I am a student two.">Student Two</li>
+      </ul>
   </div><!--.large-12 -->
 </div><!--#home, .row -->
+
+<div class="row">
+  <div class="large-12 columns">
+    <button class="button large expand radius" ng-click="logout()">Log Out</button>
+  </div>
+</div>
