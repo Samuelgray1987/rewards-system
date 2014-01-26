@@ -13,6 +13,7 @@
 </div><!--.row-->
 
 
+{{ HTML::script('js/underscore.js') }}
 {{ HTML::script('js/angular.js')}}
 {{ HTML::script('https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js') }}
 {{ HTML::script('js/app.js') }}

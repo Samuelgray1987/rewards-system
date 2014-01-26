@@ -17,16 +17,15 @@ app.config(function($routeProvider) {
 
 });
 
-app.factory("AuthenticationService", function( $location ) {
+app.factory("AuthenticationService", function( $http, $location ) {
+
+
 	return {
 		login: function(credentials) {
-			if (credentials.email == "ralph")
-			{
-				$location.path('/home');		
-			}
+			return $http.post("auth/login", credentials);
 		},
 		logout: function() {
-			$location.path('/login');
+			$http.get("auth/logout");
 		}
 	}
 });

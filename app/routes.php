@@ -12,3 +12,4 @@
 */
 
 Route::Controller('/', 'HomeController');
+Route::Controller('auth', 'AuthController');
