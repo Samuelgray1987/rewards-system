@@ -1,0 +1,35 @@
+<div id="home" class="row">
+  <div class="large-12 columns">
+  <div class="alert-box info radius"> {{ expiry.flash }}</div>
+  <div class="alert-box info radius"> {{ message }}</div>
+    <h2> {{ title }} </h2>
+      <p>Content inserted around this area.</p>
+    
+      <table class='table large-12 columns'>
+        <thead>
+          <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Year group</th>
+            <th>Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="student in students.data">
+            <td>{{student.firstname }}</td>
+            <td>{{ student.lastname  }}</td>
+            <td>{{ student.yeargroup  }}</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+        
+  
+  </div><!--.large-12 -->
+</div><!--#home, .row -->
+
+<div class="row">
+  <div class="large-12 columns">
+    <button class="button large expand radius" ng-click="logout()">Log Out</button>
+  </div>
+</div>
