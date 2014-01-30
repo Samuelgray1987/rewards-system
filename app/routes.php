@@ -13,3 +13,8 @@
 
 Route::get('/', 'HomeController@getIndex');
 Route::controller('auth', 'AuthController');
+Route::controller('students', 'StudentController');
+Route::get('/expiry', function() {
+	return Response::json(['flash' => 'Logged in successfully']);
+	#return Response::json(['flash' =>'Session expired, please log in.'], 401);
+});
