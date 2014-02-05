@@ -35,7 +35,7 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::guest('login');
+	if (Auth::guest()) return Response::json(['flash' => 'Please log in.'], 401);
 });
 
 
@@ -70,6 +70,12 @@ Route::filter('guest', function()
 | session does not match the one given in this request, we'll bail.
 |
 */
+
+Route::filter('csrf_json', function() {
+	if (Session::token() != Input::json('csrf_token')) {
+		throw new Illuminate\Session\TokenMismatchException;
+	}
+});
 
 Route::filter('csrf', function()
 {

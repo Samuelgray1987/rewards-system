@@ -46,15 +46,7 @@ app.config(function($routeProvider) {
   		}
   	}
   });
-  $routeProvider.when('/manage_student/:student_id', {
-  	templateUrl: 'templates/manage-student.html',
-  	controller: 'ManageStudentController',
-  	resolve: {
-  		student: function(StudentService) {
-  			return StudentService.getIndividualStudent();
-  		}
-  	}
-   });
+
   $routeProvider.otherwise ({ redirectTo: '/login'});
 
 });
@@ -100,11 +92,9 @@ app.config(function($httpProvider) {
  */
 
 
-app.run(function($rootScope, $location, AuthenticationService, FlashService, LoggedInProof, SessionService){
+app.run(function($rootScope, $location, AuthenticationService, FlashService, LoggedInProof){
 
 	var routesThatDontRequireAuth = ['/login'];
-
-	var restrictedRoutes = ['/home', '/manage_student'];
 
 	$rootScope.$on('$routeChangeStart', function(event, next, current) {
 		if (!_(routesThatDontRequireAuth).contains($location.path()) && !AuthenticationService.isLoggedIn())
@@ -115,13 +105,7 @@ app.run(function($rootScope, $location, AuthenticationService, FlashService, Log
 		}
 		if (AuthenticationService.isLoggedIn())
 		{
-			LoggedInProof.loggedIn('authenticated');
-		}
-		//If the user is a student, restrict routes.
-		if (_(restrictedRoutes).contains($location.path()) && SessionService.get("group") == "Student" )
-		{
-			$location.path('/login');
-			FlashService.show('Unpermitted area, please login.');
+			return LoggedInProof.loggedIn('authenticated');
 		}
 	});
 
@@ -144,22 +128,11 @@ app.factory("LoggedInProof", function($rootScope, SessionService){
 	}
 })
 
-app.factory("StudentService", function($http, $location,$route, FlashService){
-	var studentError = function(response){
-		FlashService.show(response.flash);
-	};
-
+app.factory("StudentService", function($http){
 	return {
 		get: function() {
-			return $http.get("/students/students");
-		},
-		getIndividualStudent: function() {
-			var student = $http.get("/students/student?student_id=" + $route.current.params.student_id);
-			student.success(FlashService.clear);
-			student.error(studentError);
-			return student;
+			return $http.get("/students/students")
 		}
-
 	}
 });
 
@@ -195,7 +168,6 @@ app.factory("AuthenticationService", function( SessionService, $http, $location,
 	};
 	var uncacheSession = function() {
 		SessionService.unset("authenticated");
-		SessionService.unset("group");
 	};
 	var loginError = function(response) {
 		FlashService.show(response.flash);
@@ -229,10 +201,10 @@ app.factory("AuthenticationService", function( SessionService, $http, $location,
 	}
 });
 
-app.factory("sessionDataService", function(SessionService) {
+app.factory("sessionDataService", function() {
 	return {
 		cacheSession: function(sessionArray) {
-			SessionService.set("group", sessionArray.group);
+			console.log("caching" + sessionArray);
 		}
 	}
 
@@ -264,7 +236,7 @@ app.controller('LoginController', function(AuthenticationService, $scope, $locat
 			//Cache some session data, including user group
 			sessionDataService.cacheSession(data);
 
-			if ( data.group != "Student" ) {
+			if ( data.group == "Student" ) {
 				$location.path('/home');
 			} else {
 				$location.path('/student-home');
@@ -282,25 +254,11 @@ app.controller('LoginController', function(AuthenticationService, $scope, $locat
 
 app.controller('HomeController', function(AuthenticationService, FlashService, $scope, $rootScope, $location, expiry, students){
 	$scope.title = "Rewards Home";
-	angular.forEach(students.data, function(data){
-		data.yeargroup = parseFloat(data.yeargroup);
-		data.spent = parseFloat(data.spent);
-		data.total = parseFloat(data.total);
-		data.grandtotal = parseFloat(data.grandtotal);
-	});
+	$scope.message = "Mouse over to see directive";
 	$scope.students = students.data;
-	
+
 	$scope.expiry = expiry.data;
 
-	$rootScope.logout = function() {
-		AuthenticationService.logout().success(function(){
-			$location.path('/login');
-		});
-	};
-});
-app.controller('ManageStudentController', function(AuthenticationService, FlashService, $scope, $rootScope, student){
-	$scope.title = "Manage Student ";
-	$scope.student = student.data[0];
 	$rootScope.logout = function() {
 		AuthenticationService.logout().success(function(){
 			$location.path('/login');
@@ -311,6 +269,7 @@ app.controller('ManageStudentController', function(AuthenticationService, FlashS
 app.controller('StudentHomeController', function(AuthenticationService, FlashService, $scope, $rootScope, $location, expiry){
 	$scope.title = "Rewards Home Students";
 	$scope.message = "Mouse over to see directive";
+
 	$scope.expiry = expiry.data;
 
 	$rootScope.logout = function() {
@@ -342,4 +301,3 @@ app.directive("showsMessageWhenHovered", function(){
 		}
 	};
 });
-

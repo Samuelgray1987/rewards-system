@@ -17,6 +17,8 @@ class AuthController extends BaseController {
 
 		$this->username = Input::json('username');
 		$this->password = Input::json('password');
+
+		$this->beforeFilter('csrf_json', ["only" => ["postLogin"]]);
 	}
 
 	public function postLogin()
@@ -31,15 +33,24 @@ class AuthController extends BaseController {
 		}		
 
 		$valid = $adldap->authenticate($this->username, $this->password);
-
 		if ($valid)
 		{
 			//Retrieve details from ad. email, staff group, first name, username, surname
 			$userinfo = $adldap->user()->info($this->username, ["mail", "description", "sn", "cn", "givenname"]);
 
-			$user = $this->user->where('username', '=', $this->username)->first();
-			Auth::login($user);			
-			return Response::json(Auth::user());
+			try
+			{
+				$user = $this->user->where('username', '=', $this->username)->first();
+				if(is_object($user))
+				{	
+					Auth::login($user, true);
+					return Response::json(Auth::user());
+				}
+				throw new Exception ("Failed");
+			} catch (Exception $e)
+			{
+				return Response::json(['flash' => 'You are not in our db.'], 500);
+			}
 		} else {
 			return Response::json(['flash' => 'Incorrect AD Details'], 500);
 		}

@@ -16,5 +16,7 @@ Route::controller('auth', 'AuthController');
 Route::controller('students', 'StudentController');
 Route::get('/expiry', function() {
 	return Response::json(['flash' => 'Logged in successfully']);
-	#return Response::json(['flash' =>'Session expired, please log in.'], 401);
+});
+Route::get('/templates', function() {
+	return Response::json(['flash' => 'You should not be here.'],401);
 });

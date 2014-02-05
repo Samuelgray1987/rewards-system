@@ -1,18 +1,51 @@
 <div id="home" class="row">
   <div class="large-12 columns">
-  <div class="alert-box info radius"> {{ expiry.flash }}</div>
-  <div class="alert-box info radius"> {{ message }}</div>
     <h2> {{ title }} </h2>
-      <p>Content inserted around this area.</p>
-      <ul>
-        <li shows-message-when-hovered message="I am a student one.">Student One,</li>
-        <li shows-message-when-hovered message="I am a student two.">Student Two</li>
-      </ul>
+        <div class="row">
+          <div class="medium-6 columns">
+            <label>Search Students</label>
+            <input type="text" ng-model="search.$" placeholder="Search by student" />
+          </div>
+          <div class="medium-6 columns">
+            <label>Filter by Yeargroup</label>
+            <select ng-model="search.yeargroup">
+              <option value="" selected>All Years</option>
+              <option value="7">Year 7</option>
+              <option value="8">Year 8</option>
+              <option value="9">Year 9</option>
+              <option value="10">Year 10</option>
+              <option value="11">Year 11</option>
+              <option value="12">Year 12</option>
+              <option value="13">Year 13</option>
+              <option value="14">Year 14</option>
+            </select>
+          </div>
+        </div>
+        <table class='table large-12 columns'>
+        <thead>
+          <tr>
+            <th><a href="" ng-click="reverse = predicate == 'forename' && !reverse; predicate = 'forename'">First name</a></th>
+            <th><a href="" ng-click="reverse = predicate == 'surname' && !reverse; predicate = 'surname'">Last name</th>
+            <th><a href="" ng-click="reverse = predicate == 'yeargroup' && !reverse; predicate = 'yeargroup'">Year group</th>
+            <th><a href="" ng-click="reverse = predicate == 'total' && !reverse; predicate = 'total'">Points</th>
+            <th><a href="" ng-click="reverse = predicate == 'spent' && !reverse; predicate = 'spent'">Spent</th>
+            <th><a href="" ng-click="reverse = predicate == 'grandtotal' && !reverse; predicate = 'grandtotal'">Grand Total</th>
+            <th>Manage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="student in students | filter:search | orderBy:predicate:reverse">
+            <td>{{ student.forename }} </td>
+            <td>{{ student.surname }}</td>
+            <td>{{ student.yeargroup | number:0 }}</td>
+            <td>{{ student.total | number:0 }}</td>
+            <td>{{ student.spent | number:0 }}</td>
+            <td>{{ student.grandtotal | number:0 }}</td>
+            <td><a ng-href="#/manage_student/{{ student.username }}">Manage {{student.forename}}</td>
+          </tr>
+        </tbody>
+      </table>
+        
+  
   </div><!--.large-12 -->
 </div><!--#home, .row -->
-
-<div class="row">
-  <div class="large-12 columns">
-    <button class="button large expand radius" ng-click="logout()">Log Out</button>
-  </div>
-</div>

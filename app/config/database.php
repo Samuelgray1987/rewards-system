@@ -55,7 +55,7 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'rewards-system',
+			'database'  => 'vle',
 			'username'  => 'root',
 			'password'  => '345564',
 			'charset'   => 'utf8',

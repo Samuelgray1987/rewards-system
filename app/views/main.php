@@ -1,27 +1,56 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="app">
 <head>
-	<title>Angular App Test</title>
+	<meta charset="UTF-8">
+	<title>Walbottle Campus - Rewards System</title>
 	<link type="text/css" media="all" rel="stylesheet" href="css/foundation.min.css" />
+	<link type="text/css" media="all" rel="stylesheet" href="css/style.css" />
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src='js/foundation.min.js'></script>
 	<script src='js/underscore.js'></script>
 	<script src='js/angular.js'></script>
 	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js'></script>
+	<script src='js/angular-sanitize.js'></script>
 	<script src='js/app.js'></script>
+	<script>
+		angular.module("app").constant("CSRF_TOKEN", '<?php echo csrf_token(); ?>');
+	</script>
 </head>
-<body>
-	<div class="row">	
-		<div class="large-12 columns">
-			<div id="flash" class="alert-box alert" ng-show="flash">
-				{{ flash }}
+	<body>
+		<nav ng-if="loggedIn" class="top-bar" data-topbar> 
+			<ul class="title-area"> 
+				<li class="name"> 
+					<h1>
+						<a href="#">Walbottle Campus - Rewards System</a>
+					</h1> 
+				</li> 
+				<li class="toggle-topbar menu-icon">
+					<a href="#">Menu</a>
+				</li> 
+			</ul> 
+			<section class="top-bar-section"> 
+				<!-- Right Nav Section --> 
+				<ul class="right"> 
+					<li class="active">
+						<a ng-href="#/home">Dashboard</a>
+					</li>  
+					<li class="active">
+						<a ng-click="logout()">Logout</a>
+					</li>  
+				</ul> 
+			</section> 
+		</nav>
+		<div class="row">	
+			<div class="large-12 columns">
+				<div id="flash" class="alert-box alert" ng-show="flash">
+					{{ flash }}
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="large-12 columns">
-			<h1>Rewards System</h1>
-			<div id="view" ng-view></div>
-		</div>	<!--.large-12 columns-->
-	</div><!--.row-->
-
-</body>
+		<div class="row">
+			<div class="large-12 columns">
+				<div id="view" ng-view></div>
+			</div>	<!--.large-12 columns-->
+		</div><!--.row-->
+	</body>
 </html>

@@ -1,0 +1,69 @@
+<div id="home" class="row">
+  <div class="large-12 columns">
+  <ul class="breadcrumbs">
+    <li><a ng-href="#/home">Home</a></li>
+    <li class="current"><a href="#">Manage {{ student.forename }} {{ student.surname }}</a></li>
+  </ul>
+    <h2>Manage {{ student.forename }} {{ student.surname }}</h2>
+    <div class='row'>
+      <div class='large-12 columns'>
+        <ul class="pricing-table">
+          <li class="title">{{ student.forename }} {{ student.surname }} at a glance</li>
+          <li class="price">Grand Total Points: {{ student.reflection + student.responsibility + student.reasoning + student.resourcefulness + student.resilience + student.respect - student.spent }}</li>
+          <li class="description">Total Points Spent: {{student.spent}}</li>
+          <li class="bullet-item">Total Points: {{ student.reflection + student.responsibility + student.reasoning + student.resourcefulness + student.resilience + student.respect }}</li>
+        </ul>
+      </div>
+    </div>
+      <form ng-submit="login()">
+        <fieldset class="radius">
+          <div class="row">
+            <div class='large-12 columns'>
+              <h3>Current Points</h3>
+            </div>
+            <div class="large-2 columns">
+              <label for="reflection">Reflection</label>
+              <input type="text" name="reflection" placeholder="0" value="{{ student.reflection }}" required/>
+            </div>
+              <div class="large-2 columns">
+              <label for="responsibility">Responsibility</label>
+              <input type="text" name="responsibility" placeholder="0" value="{{ student.responsibility }}" required/>
+            </div>
+            <div class="large-2 columns">
+              <label for="reasoning">Reasoning</label>
+              <input type="text" name="reasoning" placeholder="0" value="{{ student.reasoning }}" required/>
+            </div>
+              <div class="large-2 columns">
+              <label for="resourcefulness">Resourcefulness</label>
+              <input type="text" name="resourcefulness" placeholder="0" value="{{ student.resourcefulness }}" required/>
+            </div>
+            <div class="large-2 columns">
+              <label for="resilience">Resilience</label>
+              <input type="text" name="resilience" placeholder="0" value="{{ student.resilience }}" required/>
+            </div>
+              <div class="large-2 columns">
+              <label for="resilience">Respect</label>
+              <input type="text" name="respect" placeholder="0" value="{{ student.respect }}" required/>
+            </div>
+
+          </div>
+        </fieldset>
+        <fieldset class="radius">
+          <div class="row">
+            <div class='large-12 columns'>
+              <h3>Current Spending</h3>
+            </div>
+            <div class="large-12 columns">
+              <label for="spending">Spending</label>
+              <input type="text" name="spending" placeholder="0" value="{{ student.spent }}" required/>
+            </div>
+          </div>
+        </fieldset>
+          <div class="row">
+            <div class="large-12 columns">
+              <button type="submit" class="button large radius">Update Details</button>
+            </div>
+          </div>
+      </form>
+  </div><!--.large-12 -->
+</div><!--#home, .row -->
