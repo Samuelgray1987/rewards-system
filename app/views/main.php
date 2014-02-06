@@ -31,10 +31,13 @@
 			<section class="top-bar-section"> 
 				<!-- Right Nav Section --> 
 				<ul class="right"> 
-					<li class="active">
-						<a ng-href="#/home">Dashboard</a>
+					<li>
+						<a ng-href="#/rewards">Rewards</a>
+					</li>
+					<li>
+						<a ng-href="#/home">Manage Students</a>
 					</li>  
-					<li class="active">
+					<li>
 						<a ng-click="logout()">Logout</a>
 					</li>  
 				</ul> 
@@ -44,6 +47,13 @@
 			<div class="large-12 columns">
 				<div id="flash" class="alert-box alert" ng-show="flash">
 					{{ flash }}
+					<i class="close" close>&times;</i>
+				</div>
+			</div>
+			<div class="large-12 columns">
+				<div id="flash" class="alert-box success" ng-show="message">
+					{{ message }}
+					<i class="close" close>&times;</i>
 				</div>
 			</div>
 		</div>

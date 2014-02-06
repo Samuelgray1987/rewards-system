@@ -14,6 +14,7 @@
 Route::get('/', 'HomeController@getIndex');
 Route::controller('auth', 'AuthController');
 Route::controller('students', 'StudentController');
+Route::controller('rewards', 'RewardsController');
 Route::get('/expiry', function() {
 	return Response::json(['flash' => 'Logged in successfully']);
 });

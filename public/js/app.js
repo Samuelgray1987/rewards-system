@@ -55,6 +55,15 @@ app.config(function($routeProvider) {
   		}
   	}
    });
+  $routeProvider.when('/rewards', {
+  	templateUrl: 'templates/rewards.html',
+  	controller: 'RewardsController',
+  	resolve: {
+  			rewards: function(RewardsService) {
+  				return RewardsService.get();
+  			}
+  		}
+  });
   $routeProvider.otherwise ({ redirectTo: '/login'});
 
 });
@@ -123,6 +132,9 @@ app.run(function($rootScope, $location, AuthenticationService, FlashService, Log
 			$location.path('/login');
 			FlashService.show('Unpermitted area, please login.');
 		}
+		//Any global clears.
+		FlashService.clearMessage();
+
 	});
 
 })
@@ -163,6 +175,18 @@ app.factory("StudentService", function($http, $location,$route, FlashService){
 	}
 });
 
+app.factory("RewardsService", function($http, $location,$route, FlashService){
+	var rewardError = function(response){
+		FlashService.show(response.flash);
+	};
+
+	return {
+		get: function() {
+			return $http.get("/rewards/index");
+		}
+	}
+});
+
 app.factory("FlashService", function($rootScope){
 	return {
 		show: function(message) {
@@ -170,6 +194,12 @@ app.factory("FlashService", function($rootScope){
 		},
 		clear: function(){
 			$rootScope.flash = "";
+		},
+		showMessage: function(message) {
+			$rootScope.message = message;
+		},
+		clearMessage: function() {
+			$rootScope.message = "";
 		}
 	}
 })
@@ -225,6 +255,23 @@ app.factory("AuthenticationService", function( SessionService, $http, $location,
 		},
 		isLoggedIn: function() {
 			return SessionService.get('authenticated');
+		}
+	}
+});
+
+app.factory("FormPostingService", function($http, $rootScope, FlashService){
+	var postError = function(response) {
+		FlashService.show(response.flash);
+	};
+
+	return {
+		postForm : function(url, data) {
+			var dataToSend = $http.post(url, data);
+			dataToSend.success(function(){
+				$rootScope.message = "Students details updated."
+			});
+			dataToSend.error(postError);
+			return dataToSend;
 		}
 	}
 });
@@ -298,9 +345,17 @@ app.controller('HomeController', function(AuthenticationService, FlashService, $
 		});
 	};
 });
-app.controller('ManageStudentController', function(AuthenticationService, FlashService, $scope, $rootScope, student){
+
+app.controller('ManageStudentController', function(AuthenticationService, FlashService, $scope, $rootScope, student, FormPostingService, $route){
 	$scope.title = "Manage Student ";
 	$scope.student = student.data[0];
+
+
+	$scope.update = function() {
+		FormPostingService.postForm("students/updatepoints", $scope.student).success(function(){
+		});
+	}
+
 	$rootScope.logout = function() {
 		AuthenticationService.logout().success(function(){
 			$location.path('/login');
@@ -343,3 +398,12 @@ app.directive("showsMessageWhenHovered", function(){
 	};
 });
 
+app.directive("close", function() {
+	return{
+		restrict: "A",
+		link: function(scope, element, attributes){
+			element.bind("click", function() {
+			});
+		}
+	}
+})

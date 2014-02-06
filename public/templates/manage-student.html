@@ -15,7 +15,7 @@
         </ul>
       </div>
     </div>
-      <form ng-submit="login()">
+      <form ng-submit="update()">
         <fieldset class="radius">
           <div class="row">
             <div class='large-12 columns'>
@@ -23,27 +23,27 @@
             </div>
             <div class="large-2 columns">
               <label for="reflection">Reflection</label>
-              <input type="text" name="reflection" placeholder="0" value="{{ student.reflection }}" required/>
+              <input type="number" name="reflection" placeholder="0" ng-model="student.reflection" integer/>
             </div>
               <div class="large-2 columns">
               <label for="responsibility">Responsibility</label>
-              <input type="text" name="responsibility" placeholder="0" value="{{ student.responsibility }}" required/>
+              <input type="number" name="responsibility" placeholder="0" ng-model="student.responsibility" integer/>
             </div>
             <div class="large-2 columns">
               <label for="reasoning">Reasoning</label>
-              <input type="text" name="reasoning" placeholder="0" value="{{ student.reasoning }}" required/>
+              <input type="number" name="reasoning" placeholder="0" ng-model="student.reasoning" integer/>
             </div>
               <div class="large-2 columns">
               <label for="resourcefulness">Resourcefulness</label>
-              <input type="text" name="resourcefulness" placeholder="0" value="{{ student.resourcefulness }}" required/>
+              <input type="number" name="resourcefulness" placeholder="0" ng-model="student.resourcefulness" integer/>
             </div>
             <div class="large-2 columns">
               <label for="resilience">Resilience</label>
-              <input type="text" name="resilience" placeholder="0" value="{{ student.resilience }}" required/>
+              <input type="number" name="resilience" placeholder="0" ng-model="student.resilience" integer/>
             </div>
               <div class="large-2 columns">
               <label for="resilience">Respect</label>
-              <input type="text" name="respect" placeholder="0" value="{{ student.respect }}" required/>
+              <input type="number" name="respect" placeholder="0" ng-model="student.respect" integer/>
             </div>
 
           </div>
@@ -55,7 +55,7 @@
             </div>
             <div class="large-12 columns">
               <label for="spending">Spending</label>
-              <input type="text" name="spending" placeholder="0" value="{{ student.spent }}" required/>
+              <input type="number" name="spending" placeholder="0" ng-model="student.spent" integer/>
             </div>
           </div>
         </fieldset>

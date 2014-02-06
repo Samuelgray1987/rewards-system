@@ -14,24 +14,26 @@ class Students extends Eloquent {
 	public function studentsWithPoints() {
 		return DB::table($this->table)
 			->join('rewards', 'user_11.UPN', '=', 'rewards.upn')
-			->select('user_11.forename', 'user_11.surname', 'user_11.UPN', 'user_11.username',
-											DB::raw('CAST(user_11.yeargroup AS UNSIGNED) AS yeargroup'),
-											DB::raw('(CAST(rewards.reflection AS UNSIGNED) +  
-											CAST(rewards.responsibility AS UNSIGNED) +  
-											CAST(rewards.reasoning AS UNSIGNED) + 
-											CAST(rewards.resourcefulness AS UNSIGNED) +  
-											CAST(rewards.resilience AS UNSIGNED) + 
-											CAST(rewards.respect AS UNSIGNED)) AS total'),
-								  	DB::raw('CAST(spent AS UNSIGNED) AS spent'),
-								 	DB::raw('((CAST(rewards.reflection AS UNSIGNED) +  
-											 CAST(rewards.responsibility AS UNSIGNED) +  
-											 CAST(rewards.reasoning AS UNSIGNED) + 
-											 CAST(rewards.resourcefulness AS UNSIGNED) +  
-											 CAST(rewards.resilience AS UNSIGNED) + 
-											 CAST(rewards.respect AS UNSIGNED)) - CAST(spent AS UNSIGNED)) AS grandtotal')
+			->select('user_11.*',
+								DB::raw('(rewards.reflection +  
+										 rewards.responsibility + 
+										 rewards.reasoning + 
+										 rewards.resourcefulness +  
+										 rewards.resilience + 
+										 rewards.respect) AS total'),
+								DB::raw('spent'),
+								DB::raw('(rewards.reflection +  
+										  rewards.responsibility +  
+										  rewards.reasoning + 
+  										  rewards.resourcefulness +  
+										  rewards.resilience +  
+										  rewards.respect - 
+										  spent) AS grandtotal')
 								)
 			->where('group', '=', 'Student')
 			->get();
+		return DB::table($this->table)
+					->get();
 	}
 	public function studentDetails($username) {
 		return DB::table($this->table)

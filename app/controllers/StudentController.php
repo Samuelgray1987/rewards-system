@@ -4,9 +4,12 @@ class StudentController extends BaseController {
 	
 	protected $students;
 
-	public function __construct(Students $students) {
-		$this->students = $students;
+	protected $rewards;
+
+	public function __construct(Students $students, Rewards $rewards) {
 		$this->beforeFilter('auth');
+		$this->students = $students;
+		$this->rewards = $rewards;
 	}
 
 	public function getStudents() {
@@ -31,5 +34,26 @@ class StudentController extends BaseController {
 			return Response::json(['flash' => 'No user with that name is the database.'], 500);
 		}
 
+	}
+	public function postUpdatepoints() {
+		$validation = new Services\Validators\StudentPoints;
+		if ($validation->passes())
+		{
+			try {
+				$student = $this->rewards->where('upn', '=', Input::get('upn'));
+
+				if(!$student) throw new Exception ("Error");
+
+				return $student->update(['reflection' => Input::get('reflection'), 'responsibility' => Input::get('responsibility'),
+					'reasoning' => Input::get('reasoning'), 
+					'resourcefulness' => Input::get('resourcefulness'),
+					'resilience' => Input::get('resilience'),
+					'respect' => Input::get('respect'),
+					'spent' => Input::get('spent') ]);				
+			} catch (Exception $e) {
+				return Response::json(['flash' => 'Error inputting data to database.'], 500);
+			}
+		}
+		return Response::json(['flash' => 'Please ensure all values are entered correctly.' . $validation->errors], 500);
 	}
 }
