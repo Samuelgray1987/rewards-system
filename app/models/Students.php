@@ -32,8 +32,6 @@ class Students extends Eloquent {
 								)
 			->where('group', '=', 'Student')
 			->get();
-		return DB::table($this->table)
-					->get();
 	}
 	public function studentDetails($username) {
 		return DB::table($this->table)

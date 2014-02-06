@@ -290,7 +290,16 @@ app.factory("sessionDataService", function(SessionService) {
  * Controllers
  *
  */
+app.controller('RewardsController', function (AuthenticationService, $scope, $location, rewards) {
+	$scope.title = "Student Rewards";
+	$scope.rewards = rewards.data;
 
+	$scope.logout = function() {
+		AuthenticationService.logout().success(function(){
+			$location.path('/login');
+		});
+	}
+});
 app.controller('StudentsController', function (AuthenticationService, FlashService, $scope, $location, students){
 	$scope.title = "Students";
 	$scope.students = students;

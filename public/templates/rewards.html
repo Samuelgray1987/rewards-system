@@ -21,6 +21,7 @@
             </select>
           </div>
         </div>
+        {{ rewards }}
         <table class='table large-12 columns'>
         <thead>
           <tr>
@@ -34,7 +35,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="student in students | filter:search | orderBy:predicate:reverse">
+          <tr ng-repeat="reward in rewards | filter:search | orderBy:predicate:reverse">
             <td>{{ student.forename }} </td>
             <td>{{ student.surname }}</td>
             <td>{{ student.yeargroup | number:0 }}</td>

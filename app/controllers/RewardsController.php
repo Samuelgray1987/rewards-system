@@ -2,16 +2,16 @@
 
 class RewardsController extends BaseController {
 
-	protected $rewards;
+	protected $rewardsPurchased;
 
-	public function __construct(Rewards $rewards)
+	public function __construct(RewardsPurchased $rewardsPurchased)
 	{
 		$this->beforeFilter('auth');
-		$this->rewards = $rewards;
+		$this->rewardsPurchased = $rewardsPurchased;
 	}
 
 	public function getIndex()
 	{
-		return $this->rewards->get()->toJson();
+		return $this->rewardsPurchased->rewards();
 	}
 }
