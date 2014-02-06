@@ -21,28 +21,25 @@
             </select>
           </div>
         </div>
-        {{ rewards }}
         <table class='table large-12 columns'>
         <thead>
           <tr>
             <th><a href="" ng-click="reverse = predicate == 'forename' && !reverse; predicate = 'forename'">First name</a></th>
-            <th><a href="" ng-click="reverse = predicate == 'surname' && !reverse; predicate = 'surname'">Last name</th>
-            <th><a href="" ng-click="reverse = predicate == 'yeargroup' && !reverse; predicate = 'yeargroup'">Year group</th>
-            <th><a href="" ng-click="reverse = predicate == 'total' && !reverse; predicate = 'total'">Points</th>
-            <th><a href="" ng-click="reverse = predicate == 'spent' && !reverse; predicate = 'spent'">Spent</th>
-            <th><a href="" ng-click="reverse = predicate == 'grandtotal' && !reverse; predicate = 'grandtotal'">Grand Total</th>
-            <th>Manage</th>
+            <th><a href="" ng-click="reverse = predicate == 'surname' && !reverse; predicate = 'surname'">Last name</a></th>
+            <th><a href="" ng-click="reverse = predicate == 'yeargroup' && !reverse; predicate = 'yeargroup'">Year group</a></th>
+            <th><a href="" ng-click="reverse = predicate == 'points' && !reverse; predicate = 'points'">Points</a></th>
+            <th><a href="" ng-click="reverse = predicate == 'reward' && !reverse; predicate = 'reward'">Reward</a></th>
+            <th>Collected</th>
           </tr>
         </thead>
         <tbody>
           <tr ng-repeat="reward in rewards | filter:search | orderBy:predicate:reverse">
-            <td>{{ student.forename }} </td>
-            <td>{{ student.surname }}</td>
-            <td>{{ student.yeargroup | number:0 }}</td>
-            <td>{{ student.total | number:0 }}</td>
-            <td>{{ student.spent | number:0 }}</td>
-            <td>{{ student.grandtotal | number:0 }}</td>
-            <td><a ng-href="#/manage_student/{{ student.username }}">Manage {{student.forename}}</td>
+            <td>{{ reward.forename }} </td>
+            <td>{{ reward.surname }}</td>
+            <td>{{ reward.yeargroup | number:0 }}</td>
+            <td>{{ reward.points | number:0 }}</td>
+            <td>{{ reward.title }}</td>
+            <td><a ng-click="collected(reward.id)">Confirm as Collected</td>
           </tr>
         </tbody>
       </table>

@@ -184,6 +184,7 @@ app.factory("RewardsService", function($http, $location,$route, FlashService){
 		get: function() {
 			return $http.get("/rewards/index");
 		}
+
 	}
 });
 
@@ -265,10 +266,10 @@ app.factory("FormPostingService", function($http, $rootScope, FlashService){
 	};
 
 	return {
-		postForm : function(url, data) {
+		postForm : function(url, data, message) {
 			var dataToSend = $http.post(url, data);
 			dataToSend.success(function(){
-				$rootScope.message = "Students details updated."
+				$rootScope.message = message;
 			});
 			dataToSend.error(postError);
 			return dataToSend;
@@ -290,9 +291,17 @@ app.factory("sessionDataService", function(SessionService) {
  * Controllers
  *
  */
-app.controller('RewardsController', function (AuthenticationService, $scope, $location, rewards) {
+app.controller('RewardsController', function (AuthenticationService, $scope, $location, rewards, FormPostingService) {
 	$scope.title = "Student Rewards";
+	angular.forEach(rewards.data, function(data){
+		data.yeargroup = parseFloat(data.yeargroup);
+		data.points = parseFloat(data.points);
+	});
 	$scope.rewards = rewards.data;
+
+	$scope.collected = function(id) {
+		FormPostingService.postForm("rewards/delete", id, "Item marked as collected.");
+	}
 
 	$scope.logout = function() {
 		AuthenticationService.logout().success(function(){
@@ -361,7 +370,7 @@ app.controller('ManageStudentController', function(AuthenticationService, FlashS
 
 
 	$scope.update = function() {
-		FormPostingService.postForm("students/updatepoints", $scope.student).success(function(){
+		FormPostingService.postForm("students/updatepoints", $scope.student, "Student successfully edited.").success(function(){
 		});
 	}
 
