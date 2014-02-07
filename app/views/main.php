@@ -35,8 +35,14 @@
 						<a ng-href="#/rewards">Rewards</a>
 					</li>
 					<li>
+						<a ng-href="#/collected">Collected Rewards</a>
+					</li>
+					<li>
 						<a ng-href="#/home">Manage Students</a>
 					</li>  
+					<li>
+						<a ng-href="#/prizes">Manage Prizes</a>
+					</li> 
 					<li>
 						<a ng-click="logout()">Logout</a>
 					</li>  

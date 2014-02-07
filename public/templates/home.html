@@ -1,6 +1,22 @@
 <div id="home" class="row">
   <div class="large-12 columns">
     <h2> {{ title }} </h2>
+      <div class='panel callout radius'>
+        <div class='row'>
+          <div class='large-6 columns'>
+            <h3>Points</h3>
+            <h5>Filtered Total Points:  {{(students|filter:search).length}}</h5>
+            <h5>Total Points: {{ students|filter:search|sumByKeyTotal:'total' }}</h5>
+          </div>
+          <div class='large-6 columns'>
+            <h3>Expenditure</h3>
+            <h5>Unspent Balance: &pound; {{ students|filter:search|sumByKey:'grandtotal' }}</h5>
+            <h5>Total Spent: &pound; {{ students|filter:search|sumByKey:'spent' }}</h5>
+          </div>
+        </div>
+      </div>
+      
+      <div class='panel radius'>
         <div class="row">
           <div class="medium-6 columns">
             <label>Search Students</label>
@@ -21,6 +37,7 @@
             </select>
           </div>
         </div>
+      </div>
         <table class='table large-12 columns'>
         <thead>
           <tr>

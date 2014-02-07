@@ -12,6 +12,8 @@
           <li class="price">Grand Total Points: {{ student.reflection + student.responsibility + student.reasoning + student.resourcefulness + student.resilience + student.respect - student.spent }}</li>
           <li class="description">Total Points Spent: {{student.spent}}</li>
           <li class="bullet-item">Total Points: {{ student.reflection + student.responsibility + student.reasoning + student.resourcefulness + student.resilience + student.respect }}</li>
+          <li class="bullet-item">Current Balance: &pound; {{ (student.reflection + student.responsibility + student.reasoning + student.resourcefulness + student.resilience + student.respect - student.spent) / 20 }}</li>
+          <li class="bullet-item">Amount Spent: &pound; {{ student.spent / 20 }}</li>
         </ul>
       </div>
     </div>

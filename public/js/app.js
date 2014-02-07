@@ -64,6 +64,24 @@ app.config(function($routeProvider) {
   			}
   		}
   });
+  $routeProvider.when('/collected', {
+  	templateUrl: 'templates/collected.html',
+  	controller: 'CollectedController',
+  	resolve: {
+  			rewards: function(RewardsService) {
+  				return RewardsService.getCollected();
+  			}
+  		}
+  });
+  $routeProvider.when('/prizes', {
+  	templateUrl: 'templates/prizes.html',
+  	controller: 'PrizesController',
+  	resolve: {
+  			prizes: function(PrizesService) {
+  				return PrizesService.get();
+  			}
+  		}
+  });
   $routeProvider.otherwise ({ redirectTo: '/login'});
 
 });
@@ -113,7 +131,7 @@ app.run(function($rootScope, $location, AuthenticationService, FlashService, Log
 
 	var routesThatDontRequireAuth = ['/login'];
 
-	var restrictedRoutes = ['/home', '/manage_student'];
+	var restrictedRoutes = ['/home', '/manage_student', '/rewards', '/collected'];
 
 	$rootScope.$on('$routeChangeStart', function(event, next, current) {
 		if (!_(routesThatDontRequireAuth).contains($location.path()) && !AuthenticationService.isLoggedIn())
@@ -183,6 +201,22 @@ app.factory("RewardsService", function($http, $location,$route, FlashService){
 	return {
 		get: function() {
 			return $http.get("/rewards/index");
+		},
+		getCollected: function() {
+			return $http.get("/rewards/collected");
+		}
+
+	}
+});
+
+app.factory("PrizesService", function($http, $location,$route, FlashService){
+	var prizesError = function(response){
+		FlashService.show(response.flash);
+	};
+
+	return {
+		get: function() {
+			return $http.get("/prizes/index");
 		}
 
 	}
@@ -299,7 +333,7 @@ app.factory("sessionDataService", function(SessionService) {
  */
 
 app.controller('RewardsController', function (AuthenticationService, $scope, $location, rewards, FormPostingService) {
-	$scope.title = "Student Rewards";
+	$scope.title = "Student Rewards - Not Collected";
 	angular.forEach(rewards.data, function(data){
 		data.yeargroup = parseFloat(data.yeargroup);
 		data.points = parseFloat(data.points);
@@ -307,9 +341,11 @@ app.controller('RewardsController', function (AuthenticationService, $scope, $lo
 	});
 	$scope.rewards = rewards.data;
 
-	$scope.collected = function(id, reward) {
+	$scope.collected = function(id, reward, index) {
 		FormPostingService.postForm("rewards/delete", id, "Item marked as collected.");
-			return reward.show = false;
+		$scope.rewards.splice(index, 1);
+		$scope.$apply();
+		return reward.show = false;
 	};
 
 	$scope.logout = function() {
@@ -319,6 +355,29 @@ app.controller('RewardsController', function (AuthenticationService, $scope, $lo
 		});
 	}
 });
+
+app.controller('CollectedController', function (AuthenticationService, $scope, $location, rewards, FormPostingService) {
+	$scope.title = "Student Rewards - Collected";
+	angular.forEach(rewards.data, function(data){
+		data.yeargroup = parseFloat(data.yeargroup);
+		data.points = parseFloat(data.points);
+		data.show = true;
+	});
+	$scope.rewards = rewards.data;
+
+	$scope.collected = function(id, reward) {
+		FormPostingService.postForm("rewards/delete", id, "Item marked as collected.");
+		return reward.show = false;
+	};
+
+	$scope.logout = function() {
+		AuthenticationService.logout().success(function(){
+			alert('click');
+			$location.path('/login');
+		});
+	}
+});
+
 app.controller('StudentsController', function (AuthenticationService, FlashService, $scope, $location, students){
 	$scope.title = "Students";
 	$scope.students = students;
@@ -358,7 +417,7 @@ app.controller('LoginController', function(AuthenticationService, $scope, $locat
 
 
 app.controller('HomeController', function(AuthenticationService, FlashService, $scope, $rootScope, $location, expiry, students){
-	$scope.title = "Rewards Home";
+	$scope.title = "All Students";
 	angular.forEach(students.data, function(data){
 		data.yeargroup = parseFloat(data.yeargroup);
 		data.spent = parseFloat(data.spent);
@@ -437,3 +496,39 @@ app.directive("close", function() {
 		}
 	}
 })
+
+/*
+ *
+ * @Filter
+ *
+ */
+//Returns points as £ value.
+app.filter('sumByKey', function() {
+	return function(data, key){
+		if (typeof(data) === 'undefined' || typeof(key) === 'undefined') {
+			return 0;
+		}
+		console.log(data);
+		var sum = 0;
+
+		angular.forEach(data, function(d){
+			sum += parseInt(d[key]);
+		});
+		return sum / 20;
+	};
+});
+//Returns a sum as a definitive number
+app.filter('sumByKeyTotal', function() {
+	return function(data, key){
+		if (typeof(data) === 'undefined' || typeof(key) === 'undefined') {
+			return 0;
+		}
+		console.log(data);
+		var sum = 0;
+
+		angular.forEach(data, function(d){
+			sum += parseInt(d[key]);
+		});
+		return sum;
+	};
+});

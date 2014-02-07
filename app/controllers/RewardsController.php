@@ -14,6 +14,10 @@ class RewardsController extends BaseController {
 	{
 		return $this->rewardsPurchased->rewards();
 	}
+	public function getCollected()
+	{
+		return $this->rewardsPurchased->rewardsCollected();
+	}
 	public function postDelete()
 	{
 		$id = Input::all();
