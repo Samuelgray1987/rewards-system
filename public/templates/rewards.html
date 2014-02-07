@@ -33,13 +33,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="reward in rewards | filter:search | orderBy:predicate:reverse">
+          <tr ng-repeat="reward in rewards | filter:search | orderBy:predicate:reverse" ng-show="reward.show">
             <td>{{ reward.forename }} </td>
             <td>{{ reward.surname }}</td>
             <td>{{ reward.yeargroup | number:0 }}</td>
             <td>{{ reward.points | number:0 }}</td>
             <td>{{ reward.title }}</td>
-            <td><a ng-click="collected(reward.id)">Confirm as Collected</td>
+            <td><a ng-click="collected(reward.id, reward)">Confirm as Collected</td>
           </tr>
         </tbody>
       </table>

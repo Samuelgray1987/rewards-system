@@ -51,7 +51,7 @@
 				</div>
 			</div>
 			<div class="large-12 columns">
-				<div id="flash" class="alert-box success" ng-show="message">
+				<div id="message" class="alert-box success" ng-show="message">
 					{{ message }}
 					<i class="close" close>&times;</i>
 				</div>

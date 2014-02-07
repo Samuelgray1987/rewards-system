@@ -188,10 +188,13 @@ app.factory("RewardsService", function($http, $location,$route, FlashService){
 	}
 });
 
-app.factory("FlashService", function($rootScope){
+app.factory("FlashService", function($rootScope, $timeout){
 	return {
 		show: function(message) {
 			$rootScope.flash = message;
+			$timeout(function(){
+				$rootScope.flash = "";
+			}, 5000);
 		},
 		clear: function(){
 			$rootScope.flash = "";
@@ -260,7 +263,7 @@ app.factory("AuthenticationService", function( SessionService, $http, $location,
 	}
 });
 
-app.factory("FormPostingService", function($http, $rootScope, FlashService){
+app.factory("FormPostingService", function($http, $rootScope, $timeout, FlashService){
 	var postError = function(response) {
 		FlashService.show(response.flash);
 	};
@@ -270,6 +273,9 @@ app.factory("FormPostingService", function($http, $rootScope, FlashService){
 			var dataToSend = $http.post(url, data);
 			dataToSend.success(function(){
 				$rootScope.message = message;
+				$timeout(function(){
+					FlashService.clearMessage();
+				}, 5000)
 			});
 			dataToSend.error(postError);
 			return dataToSend;
@@ -291,20 +297,24 @@ app.factory("sessionDataService", function(SessionService) {
  * Controllers
  *
  */
+
 app.controller('RewardsController', function (AuthenticationService, $scope, $location, rewards, FormPostingService) {
 	$scope.title = "Student Rewards";
 	angular.forEach(rewards.data, function(data){
 		data.yeargroup = parseFloat(data.yeargroup);
 		data.points = parseFloat(data.points);
+		data.show = true;
 	});
 	$scope.rewards = rewards.data;
 
-	$scope.collected = function(id) {
+	$scope.collected = function(id, reward) {
 		FormPostingService.postForm("rewards/delete", id, "Item marked as collected.");
-	}
+			return reward.show = false;
+	};
 
 	$scope.logout = function() {
 		AuthenticationService.logout().success(function(){
+			alert('click');
 			$location.path('/login');
 		});
 	}
@@ -330,9 +340,11 @@ app.controller('LoginController', function(AuthenticationService, $scope, $locat
 			sessionDataService.cacheSession(data);
 
 			if ( data.group != "Student" ) {
-				$location.path('/home');
+				$location.path('/rewards');
 			} else {
-				$location.path('/student-home');
+				AuthenticationService.logout().success(function(){
+					$location.path('/login');
+				});
 			}
 		});
 	};
