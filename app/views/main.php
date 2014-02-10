@@ -6,12 +6,14 @@
 	<link type="text/css" media="all" rel="stylesheet" href="css/foundation.min.css" />
 	<link type="text/css" media="all" rel="stylesheet" href="css/style.css" />
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src='js/foundation.min.js'></script>
-	<script src='js/underscore.js'></script>
-	<script src='js/angular.js'></script>
-	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js'></script>
-	<script src='js/angular-sanitize.js'></script>
-	<script src='js/app.js'></script>
+	<script src='./js/foundation.min.js'></script>
+	<script src='./js/underscore.js'></script>
+	<script src='./js/angular-file-upload-shim.min.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.11/angular.min.js'></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.11/angular-route.min.js'></script>
+	<script src='./js/angular-sanitize.js'></script>
+	<script src='./js/angular-file-upload.min.js'></script>
+	<script src='./js/app.js'></script>
 	<script>
 		angular.module("app").constant("CSRF_TOKEN", '<?php echo csrf_token(); ?>');
 	</script>

@@ -1,5 +1,5 @@
 //Setter
-var app = angular.module("app", ['ngRoute', 'ngSanitize']);
+var app = angular.module("app", ['ngRoute', 'ngSanitize', 'angularFileUpload']);
 
 /*
  *
@@ -82,6 +82,19 @@ app.config(function($routeProvider) {
   			}
   		}
   });
+  $routeProvider.when('/edit-prize/:prize_id', {
+  	templateUrl: 'templates/edit-prize.html',
+  	controller: 'ManagePrizeController',
+  	resolve: {
+  			prize: function(PrizesService) {
+  				return PrizesService.getIndividualPrize();
+  			}
+  		}
+  });
+  $routeProvider.when('/add-prize', {
+  	templateUrl: 'templates/edit-prize.html',
+  	controller: 'AddPrizeController'
+  });
   $routeProvider.otherwise ({ redirectTo: '/login'});
 
 });
@@ -131,7 +144,7 @@ app.run(function($rootScope, $location, AuthenticationService, FlashService, Log
 
 	var routesThatDontRequireAuth = ['/login'];
 
-	var restrictedRoutes = ['/home', '/manage_student', '/rewards', '/collected'];
+	var restrictedRoutes = ['/home', '/manage_student', '/rewards', '/collected', 'prizes', '/edit-prize'];
 
 	$rootScope.$on('$routeChangeStart', function(event, next, current) {
 		if (!_(routesThatDontRequireAuth).contains($location.path()) && !AuthenticationService.isLoggedIn())
@@ -217,6 +230,12 @@ app.factory("PrizesService", function($http, $location,$route, FlashService){
 	return {
 		get: function() {
 			return $http.get("/prizes/index");
+		},
+		getIndividualPrize: function() {
+			var prize = $http.get("/prizes/prize?prize_id=" + $route.current.params.prize_id);
+			prize.success(FlashService.clear);
+			prize.error(prizesError);
+			return prize;
 		}
 
 	}
@@ -331,6 +350,100 @@ app.factory("sessionDataService", function(SessionService) {
  * Controllers
  *
  */
+
+app.controller('PrizesController', function (AuthenticationService, $scope, $location, prizes, FormPostingService, $upload) {
+	$scope.title = "Prizes Available";
+	angular.forEach(prizes.data, function(data){
+		data.points = parseFloat(data.points);
+		data.show = true;
+	});
+	$scope.prizes = prizes.data;
+
+	$scope.remove = function(id, prize, index) {
+		FormPostingService.postForm("rewards/delete", id, "Prize removed.");
+		$scope.prizes.splice(index, 1);
+		$scope.$apply();
+		return reward.show = false;
+	};
+
+	$scope.logout = function() {
+		AuthenticationService.logout().success(function(){
+			alert('click');
+			$location.path('/login');
+		});
+	}
+});
+
+app.controller('ManagePrizeController', function(AuthenticationService, FlashService, $scope, $upload, $rootScope, prize, FormPostingService, $route){
+	$scope.title = "Manage Prize ";
+	$scope.prize = prize.data;
+	
+
+	$scope.onFileSelect = function($files) {
+	//$files: an array of files selected, each file has name, size, and type.
+		for (var i = 0; i < $files.length; i++) {
+		  var file = $files[i];
+		  	$scope.upload = $upload.upload({
+		        url: 'prizes/upload', //upload.php script, node.js route, or servlet url
+		        method: 'POST',
+		        data: {myObj: $scope.myModelObj},
+		        file: file
+		      }).progress(function(evt) {
+		        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+		      }).success(function(data, status, headers, config) {
+		        $scope.prize.image_name = data['image'];
+		      });
+		  }
+		$scope.$apply();
+	}
+
+	$scope.update = function() {
+		FormPostingService.postForm("prizes/updateprize", $scope.prize, "Prize successfully edited.").success(function(){
+		});
+	}
+
+	$rootScope.logout = function() {
+		AuthenticationService.logout().success(function(){
+			$location.path('/login');
+		});
+	};
+});
+
+app.controller('AddPrizeController', function(AuthenticationService, FlashService, $scope, $upload, $rootScope, FormPostingService, $route){
+	var prize = {};
+	$scope.title = "Manage Prize ";
+	$scope.prize = prize.data;
+	
+
+	$scope.onFileSelect = function($files) {
+	//$files: an array of files selected, each file has name, size, and type.
+		for (var i = 0; i < $files.length; i++) {
+		  var file = $files[i];
+		  	$scope.upload = $upload.upload({
+		        url: 'prizes/upload', //upload.php script, node.js route, or servlet url
+		        method: 'POST',
+		        data: {myObj: $scope.myModelObj},
+		        file: file
+		      }).progress(function(evt) {
+		        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+		      }).success(function(data, status, headers, config) {
+		        $scope.prize.image_name = data['image'];
+		      });
+		  }
+		$scope.$apply();
+	}
+
+	$scope.update = function() {
+		FormPostingService.postForm("prizes/add", $scope.prize, "Prize successfully added.").success(function(){
+		});
+	}
+
+	$rootScope.logout = function() {
+		AuthenticationService.logout().success(function(){
+			$location.path('/login');
+		});
+	};
+});
 
 app.controller('RewardsController', function (AuthenticationService, $scope, $location, rewards, FormPostingService) {
 	$scope.title = "Student Rewards - Not Collected";
