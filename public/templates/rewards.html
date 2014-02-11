@@ -53,7 +53,7 @@
             <td>{{ reward.points | number:0 }}</td>
             <td>{{ reward.updated_at | date:'d/M/yyyy' }}</td>
             <td>{{ reward.title }}</td>
-            <td><a ng-click="collected(reward.id, reward, $index)">Confirm as Collected</td>
+            <td><a ng-click="collected(reward.id, reward, $index)">Confirm as Collected</a></td>
           </tr>
         </tbody>
       </table>

@@ -44,7 +44,10 @@
 					</li>  
 					<li>
 						<a ng-href="#/prizes">Manage Prizes</a>
-					</li> 
+					</li>
+					<li>
+						<a ng-href="#/prizes-deleted">Deleted Prizes</a>
+					</li>  
 					<li>
 						<a ng-click="logout()">Logout</a>
 					</li>  
