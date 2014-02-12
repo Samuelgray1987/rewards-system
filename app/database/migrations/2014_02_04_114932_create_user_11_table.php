@@ -23,6 +23,7 @@ class CreateUser11Table extends Migration {
 			$table->string('group');
 			$table->string('staff_subject');
 			$table->integer('yeargroup');
+			$table->string('clubs');
 			$table->string('smartupn');
 		});
 	}

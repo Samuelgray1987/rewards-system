@@ -588,6 +588,17 @@ app.controller('ManageStudentController', function(AuthenticationService, FlashS
 	$scope.title = "Manage Student ";
 	$scope.student = student.data[0];
 
+	angular.forEach(student.data, function(data)
+	{
+		data.reflection 		= parseFloat(data.reflection);
+		data.resilience 		= parseFloat(data.resilience);
+		data.resourcefulness 	= parseFloat(data.resourcefulness);
+		data.respect 			= parseFloat(data.respect);
+		data.responsibility	 	= parseFloat(data.responsibility);
+		data.reasoning 			= parseFloat(data.reasoning);
+		data.spent 				= parseFloat(data.spent);
+	});
+
 
 	$scope.update = function() {
 		FormPostingService.postForm("students/updatepoints", $scope.student, "Student successfully edited.").success(function(){

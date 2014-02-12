@@ -17,9 +17,9 @@ class CreateRewardsStoreItems extends Migration {
 			$table->increments('id');
 			$table->string('title');
 			$table->string('image_name')->nullable();
-			$table->string('image_extension')->nullable();
 			$table->text('description')->nullable();
 			$table->integer('points');
+			$table->string('yeargroup');
 			$table->timestamps();
 			$table->softDeletes();
 		});
