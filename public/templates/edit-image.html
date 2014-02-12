@@ -1,0 +1,29 @@
+<div id="home" class="row">
+  <div class="large-12 columns">
+  <ul class="breadcrumbs">
+    <li><a ng-href="#/prizes">Home</a></li>
+    <li><a ng-href="#/edit-prize/{{prize.id}}">Manage {{prize.title}}</a></li>
+    <li class="current"><a href="#">Manage {{ prize.title }}'s Image </a></li>
+  </ul>
+    <h2>Manage {{ prize.title }}'s Image </h2>
+      <div class="medium-6 medium-centered columns">
+      <img src="../../{{prize.image_name}}">
+      </div>
+      <form ng-submit="update()">
+        <fieldset class="radius">
+          <div class="row">
+            <div class="large-12 columns">
+              <label for="file">Change Image</label>
+              <input type="file" ng-file-select="onFileSelect($files)" >
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="row">
+          <div class="large-12 columns">
+            <button type="submit" class="button large radius">Update Details</button>
+          </div>
+        </div>
+      </form>
+  </div><!--.large-12 -->
+</div><!--#home, .row -->

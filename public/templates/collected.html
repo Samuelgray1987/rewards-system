@@ -1,0 +1,63 @@
+<div id="home" class="row">
+  <div class="large-12 columns">
+    <h2> {{ title }} </h2>
+      <div class='panel radius'>
+        <div class="row">
+          <div class="medium-6 columns">
+            <h5>Total Rewards:  {{(rewards|filter:search).length}}</h5>
+          </div>
+          <div class="medium-6 columns">
+            <h5>Total Spend: &pound; {{ rewards|filter:search|sumByKey:'points' }}</h5>
+          </div>
+        </div>
+      </div>
+      <div class='panel callout radius'>
+        <div class="row">
+          <div class="medium-6 columns">
+            <label>Search Students</label>
+            <input type="text" ng-model="search.$" placeholder="Search by student" />
+          </div>
+          <div class="medium-6 columns">
+            <label>Filter by Yeargroup</label>
+            <select ng-model="search.yeargroup">
+              <option value="" selected>All Years</option>
+              <option value="7">Year 7</option>
+              <option value="8">Year 8</option>
+              <option value="9">Year 9</option>
+              <option value="10">Year 10</option>
+              <option value="11">Year 11</option>
+              <option value="12">Year 12</option>
+              <option value="13">Year 13</option>
+              <option value="14">Year 14</option>
+            </select>
+          </div>
+        </div>
+      </div>
+        <table class='table large-12 columns'>
+        <thead>
+          <tr>
+            <th><a href="" ng-click="reverse = predicate == 'forename' && !reverse; predicate = 'forename'">First name</a></th>
+            <th><a href="" ng-click="reverse = predicate == 'surname' && !reverse; predicate = 'surname'">Last name</a></th>
+            <th><a href="" ng-click="reverse = predicate == 'yeargroup' && !reverse; predicate = 'yeargroup'">Year group</a></th>
+            <th><a href="" ng-click="reverse = predicate == 'points' && !reverse; predicate = 'points'">Points</a></th>
+            <th><a href="" ng-click="reverse = predicate == 'date' && !reverse; predicate = 'date'">Date</a></th>
+            <th><a href="" ng-click="reverse = predicate == 'reward' && !reverse; predicate = 'reward'">Reward</a></th>
+            <!--<th>Collected</th>-->
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="reward in rewards | filter:search | orderBy:predicate:reverse" ng-show="reward.show">
+            <td>{{ reward.forename }} </td>
+            <td>{{ reward.surname }}</td>
+            <td>{{ reward.yeargroup | number:0 }}</td>
+            <td>{{ reward.points | number:0 }}</td>
+            <td>{{ reward.deleted_at | date:'d/M/yyyy' }}</td>
+            <td>{{ reward.title }}</td>
+            <!--<td><a ng-click="collected(reward.id, reward)">Confirm as Collected</td>-->
+          </tr>
+        </tbody>
+      </table>
+        
+  
+  </div><!--.large-12 -->
+</div><!--#home, .row -->

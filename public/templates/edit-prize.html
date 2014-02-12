@@ -1,0 +1,67 @@
+<div id="home" class="row">
+  <div class="large-12 columns">
+  <ul class="breadcrumbs">
+    <li><a ng-href="#/prizes">Home</a></li>
+    <li class="current"><a href="#">Manage {{ prize.title }} </a></li>
+  </ul>
+    <h2 class="text-center">{{ prize.title }} </h2>
+
+      <div class="large-4 small-6 medium-centered columns">
+          <img ng-src="{{prize.image_name  && prize.image_name || 'http://placehold.it/500x500&text=' + prize.title}}" >
+          <div class="panel">
+            <h5>{{ prize.title }} </h5>
+            <h6 class="subheader">{{ prize.points }} <small>points</small></h6>
+          </div>
+      </div>
+
+      <form ng-submit="update()">
+        
+        <fieldset class="radius">
+          <div class="row">
+            <div class="large-12 columns">
+              <label for="file" >Change Image</label>
+              <input type="file" ng-file-select="onFileSelect($files)" >
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="radius">
+          <div class="row">
+            <div class="large-12 columns">
+              <label for="title">Title</label>
+              <input type="text" name="title" placeholder="Title" ng-model="prize.title" required/>
+            </div>
+              <div class="large-12 columns">
+              <label for="points">Points</label>
+              <input type="number" name="points" placeholder="0" ng-model="prize.points" integer/>
+            </div>
+            <div class="large-12 columns">
+              <label for="description">Description</label>
+              <input type="text" name="description" placeholder="Description" ng-model="prize.description" integer/>
+            </div>
+            <div class="large-12 columns">
+              <label for="yeargroup">Yeargroup</label>
+              <select  name="yeargroup" ng-model="prize.yeargroup" required>
+                <option value="0">All Years</option>
+                <option value="7">Year 7</option>
+                <option value="8">Year 8</option>
+                <option value="9">Year 9</option>
+                <option value="10">Year 10</option>
+                <option value="11">Year 11</option>
+                <option value="12">Year 12</option>
+                <option value="13">Year 13</option>
+                <option value="14">Year 14</option>
+            </select>
+            </div>
+          </div>
+        </fieldset>
+        <div class="large-12 columns">
+      </div>
+        <div class="row">
+          <div class="large-12 columns">
+            <button type="submit" class="button large radius">{{button}} Prize</button>
+          </div>
+        </div>
+      </form>
+  </div><!--.large-12 -->
+</div><!--#home, .row -->
