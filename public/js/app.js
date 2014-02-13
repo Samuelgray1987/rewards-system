@@ -19,7 +19,7 @@ app.config(function($routeProvider) {
   	controller: 'HomeController',
   	resolve : {
   		expiry : function($http) {
-  			return $http.get('/expiry');
+  			return $http.get('./expiry');
   		},
   		students : function(StudentService){
   			return StudentService.get();
@@ -32,7 +32,7 @@ app.config(function($routeProvider) {
   	controller: 'StudentHomeController',
   	resolve: {
   		expiry: function($http) {
-  			return $http.get('/expiry');
+  			return $http.get('./expiry');
   		}
   	}
   });
@@ -203,10 +203,10 @@ app.factory("StudentService", function($http, $location,$route, FlashService){
 
 	return {
 		get: function() {
-			return $http.get("/students/students");
+			return $http.get("./students/students");
 		},
 		getIndividualStudent: function() {
-			var student = $http.get("/students/student?student_id=" + $route.current.params.student_id);
+			var student = $http.get("./students/student?student_id=" + $route.current.params.student_id);
 			student.success(FlashService.clear);
 			student.error(studentError);
 			return student;
@@ -222,10 +222,10 @@ app.factory("RewardsService", function($http, $location,$route, FlashService){
 
 	return {
 		get: function() {
-			return $http.get("/rewards/index");
+			return $http.get("./rewards/index");
 		},
 		getCollected: function() {
-			return $http.get("/rewards/collected");
+			return $http.get("./rewards/collected");
 		}
 
 	}
@@ -238,13 +238,13 @@ app.factory("PrizesService", function($http, $location,$route, FlashService){
 
 	return {
 		get: function() {
-			return $http.get("/prizes/index");
+			return $http.get("./prizes/index");
 		},
 		getDeleted: function() {
-			return $http.get("/prizes/deleted");
+			return $http.get("./prizes/deleted");
 		},
 		getIndividualPrize: function() {
-			var prize = $http.get("/prizes/prize?prize_id=" + $route.current.params.prize_id);
+			var prize = $http.get("./prizes/prize?prize_id=" + $route.current.params.prize_id);
 			prize.success(FlashService.clear);
 			prize.error(prizesError);
 			return prize;
@@ -310,14 +310,14 @@ app.factory("AuthenticationService", function( SessionService, $http, $location,
 
 	return {
 		login: function(credentials) {
-			var login = $http.post("auth/login", sanitizeCredentials(credentials));
+			var login = $http.post("./auth/login", sanitizeCredentials(credentials));
 			login.success(cacheSession);
 			login.success(FlashService.clear);
 			login.error(loginError);
 			return login;
 		},
 		logout: function() {
-			var logout = $http.get("auth/logout");
+			var logout = $http.get("./auth/logout");
 			logout.success(uncacheSession);
 			LoggedInProof.loggedOut();
 			return logout;
@@ -372,7 +372,7 @@ app.controller('PrizesController', function (AuthenticationService, $scope, $loc
 	$scope.prizes = prizes.data;
 
 	$scope.delete = function(id, prize, index) {
-		FormPostingService.postForm("prizes/delete", id, "Prize removed.");
+		FormPostingService.postForm("./prizes/delete", id, "Prize removed.");
 		$scope.prizes.splice(index, 1);
 		return prize.show = false;
 	};
@@ -394,7 +394,7 @@ app.controller('PrizesDeletedController', function (AuthenticationService, $scop
 	$scope.prizes = prizes.data;
 
 	$scope.restore = function(id, prize, index) {
-		FormPostingService.postForm("prizes/restore", id, "Prize restored.");
+		FormPostingService.postForm("./prizes/restore", id, "Prize restored.");
 		$scope.prizes.splice(index, 1);
 		return prize.show = false;
 	};
@@ -418,7 +418,7 @@ app.controller('ManagePrizeController', function(AuthenticationService, FlashSer
 		for (var i = 0; i < $files.length; i++) {
 		  var file = $files[i];
 		  	$scope.upload = $upload.upload({
-		        url: 'prizes/upload', //upload.php script, node.js route, or servlet url
+		        url: './prizes/upload', //upload.php script, node.js route, or servlet url
 		        method: 'POST',
 		        data: {myObj: $scope.myModelObj},
 		        file: file
@@ -432,7 +432,7 @@ app.controller('ManagePrizeController', function(AuthenticationService, FlashSer
 	}
 
 	$scope.update = function() {
-		FormPostingService.postForm("prizes/updateprize", $scope.prize, "Prize successfully edited.").success(function(){
+		FormPostingService.postForm("./prizes/updateprize", $scope.prize, "Prize successfully edited.").success(function(){
 		});
 	}
 
@@ -457,7 +457,7 @@ app.controller('AddPrizeController', function(AuthenticationService, FlashServic
 		for (var i = 0; i < $files.length; i++) {
 		  var file = $files[i];
 		  	$scope.upload = $upload.upload({
-		        url: 'prizes/upload', //upload.php script, node.js route, or servlet url
+		        url: './prizes/upload', //upload.php script, node.js route, or servlet url
 		        method: 'POST',
 		        data: {myObj: $scope.myModelObj},
 		        file: file
@@ -471,7 +471,7 @@ app.controller('AddPrizeController', function(AuthenticationService, FlashServic
 	}
 
 	$scope.update = function() {
-		FormPostingService.postForm("prizes/add", $scope.prize, "Prize successfully added.").success(function(){
+		FormPostingService.postForm("./prizes/add", $scope.prize, "Prize successfully added.").success(function(){
 			$location.path('/prizes');
 		});
 	}
@@ -493,7 +493,7 @@ app.controller('RewardsController', function (AuthenticationService, $scope, $lo
 	$scope.rewards = rewards.data;
 
 	$scope.collected = function(id, reward, index) {
-		FormPostingService.postForm("rewards/delete", id, "Item marked as collected.");
+		FormPostingService.postForm("./rewards/delete", id, "Item marked as collected.");
 		$scope.rewards.splice(index, 1);
 		return reward.show = false;
 	};
@@ -516,7 +516,7 @@ app.controller('CollectedController', function (AuthenticationService, $scope, $
 	$scope.rewards = rewards.data;
 
 	$scope.collected = function(id, reward) {
-		FormPostingService.postForm("rewards/delete", id, "Item marked as collected.");
+		FormPostingService.postForm("./rewards/delete", id, "Item marked as collected.");
 		return reward.show = false;
 	};
 
@@ -601,7 +601,7 @@ app.controller('ManageStudentController', function(AuthenticationService, FlashS
 
 
 	$scope.update = function() {
-		FormPostingService.postForm("students/updatepoints", $scope.student, "Student successfully edited.").success(function(){
+		FormPostingService.postForm("./students/updatepoints", $scope.student, "Student successfully edited.").success(function(){
 		});
 	}
 

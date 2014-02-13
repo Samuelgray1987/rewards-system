@@ -42,7 +42,7 @@ class PrizesController extends BaseController {
 		$date = new DateTime();
 		$filepath = 'public/uploads/prizes/';
 		$filename = $date->format('U') . Input::file('file')->getClientOriginalName();
-		$image = Image::make( Input::file('file')->getRealPath())
+		$image = Image::make( Input::file('file')->getPathname())
 												 ->resize(1000, 1000)
 												 ->save($filepath . $filename );
 		$downloadpath = 'uploads/prizes/';
