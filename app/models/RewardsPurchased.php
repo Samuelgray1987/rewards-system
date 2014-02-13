@@ -18,10 +18,12 @@ class RewardsPurchased extends Eloquent {
 		return DB::table($this->table)
 			->join('rewards_store_items', 'rewards_store_items.id', '=', 'rewards_purchased.rewards_store_id')
 			->join('user_11', 'rewards_purchased.username', '=', 'user_11.username')
+			->leftJoin('student_reg_groups', 'user_11.UPN', '=', 'student_reg_groups.upn')
 			->select('user_11.forename', 
 					'user_11.surname', 
 					'user_11.yeargroup', 
 					'user_11.username', 
+					'student_reg_groups.reggroup',
 					'rewards_store_items.points',
 					'rewards_store_items.title',
 					'rewards_purchased.id',
@@ -34,10 +36,12 @@ class RewardsPurchased extends Eloquent {
 		return DB::table($this->table)
 			->join('rewards_store_items', 'rewards_store_items.id', '=', 'rewards_purchased.rewards_store_id')
 			->join('user_11', 'rewards_purchased.username', '=', 'user_11.username')
+			->leftJoin('student_reg_groups', 'user_11.UPN', '=', 'student_reg_groups.upn')
 			->select('user_11.forename', 
 					'user_11.surname', 
 					'user_11.yeargroup', 
 					'user_11.username', 
+					'student_reg_groups.reggroup',
 					'rewards_store_items.points',
 					'rewards_store_items.title',
 					'rewards_purchased.id',

@@ -46,6 +46,7 @@
             <th><a href="" ng-click="reverse = predicate == 'yeargroup' && !reverse; predicate = 'yeargroup'">Year group</th>
             <th><a href="" ng-click="reverse = predicate == 'total' && !reverse; predicate = 'total'">Points</th>
             <th><a href="" ng-click="reverse = predicate == 'spent' && !reverse; predicate = 'spent'">Spent</th>
+            <th><a href="" ng-click="reverse = predicate == 'reggroup' && !reverse; predicate = 'reggroup'">Reg Group</th>
             <th><a href="" ng-click="reverse = predicate == 'grandtotal' && !reverse; predicate = 'grandtotal'">Grand Total</th>
             <th>Manage</th>
           </tr>
@@ -57,6 +58,7 @@
             <td>{{ student.yeargroup | number:0 }}</td>
             <td>{{ student.total | number:0 }}</td>
             <td>{{ student.spent | number:0 }}</td>
+            <td>{{ student.reggroup }}</td>
             <td>{{ student.grandtotal | number:0 }}</td>
             <td><a ng-href="#/manage_student/{{ student.username }}">Manage {{student.forename}}</td>
           </tr>

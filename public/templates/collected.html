@@ -39,6 +39,7 @@
             <th><a href="" ng-click="reverse = predicate == 'forename' && !reverse; predicate = 'forename'">First name</a></th>
             <th><a href="" ng-click="reverse = predicate == 'surname' && !reverse; predicate = 'surname'">Last name</a></th>
             <th><a href="" ng-click="reverse = predicate == 'yeargroup' && !reverse; predicate = 'yeargroup'">Year group</a></th>
+            <th><a href="" ng-click="reverse = predicate == 'reggroup' && !reverse; predicate = 'reggroup'">Reg Group</a></th>
             <th><a href="" ng-click="reverse = predicate == 'points' && !reverse; predicate = 'points'">Points</a></th>
             <th><a href="" ng-click="reverse = predicate == 'date' && !reverse; predicate = 'date'">Date</a></th>
             <th><a href="" ng-click="reverse = predicate == 'reward' && !reverse; predicate = 'reward'">Reward</a></th>
@@ -50,6 +51,7 @@
             <td>{{ reward.forename }} </td>
             <td>{{ reward.surname }}</td>
             <td>{{ reward.yeargroup | number:0 }}</td>
+            <td>{{ reward.reggroup }}</td>
             <td>{{ reward.points | number:0 }}</td>
             <td>{{ reward.deleted_at | date:'d/M/yyyy' }}</td>
             <td>{{ reward.title }}</td>

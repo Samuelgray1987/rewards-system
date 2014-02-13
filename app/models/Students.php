@@ -15,7 +15,7 @@ class Students extends Eloquent {
 		return DB::table($this->table)
 			->join('rewards', 'user_11.UPN', '=', 'rewards.upn')
 			->leftJoin('student_reg_groups', 'user_11.UPN', '=', 'student_reg_groups.upn')
-			->select('user_11.*',
+			->select('user_11.*', 'student_reg_groups.reggroup',
 								DB::raw('(rewards.reflection +  
 										 rewards.responsibility + 
 										 rewards.reasoning + 
