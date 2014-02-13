@@ -656,7 +656,24 @@ app.directive("close", function() {
 		}
 	}
 })
-
+app.directive('loading', function($http){
+	return {
+		restrict: 'A',
+		link: function (scope, element, attributes){
+			scope.isLoading = function() {
+				return $http.pendingRequests.length > 0;
+			};
+			scope.$watch(scope.isLoading, function(v)
+			{
+				if (v){
+					element.show();
+				} else {
+					element.hide();
+				}
+			});
+		}
+	}
+});
 /*
  *
  * @Filter

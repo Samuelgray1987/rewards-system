@@ -92,6 +92,13 @@
 					<i class="close" close>&times;</i>
 				</div>
 			</div>
+			<div class="large-12 columns">
+				<div class="loading-spiner-holder" data-loading >
+					<div class="loading-spiner">
+						<div class='alert-box info'>Loading...</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="row">
 			<div class="large-12 columns">
