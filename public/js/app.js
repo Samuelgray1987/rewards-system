@@ -155,6 +155,8 @@ app.run(function($rootScope, $location, AuthenticationService, FlashService, Log
 
 	var restrictedRoutes = ['/home', '/manage_student', '/rewards', '/collected', 'prizes', '/edit-prize'];
 
+	$(document).foundation();
+
 	$rootScope.$on('$routeChangeStart', function(event, next, current) {
 		if (!_(routesThatDontRequireAuth).contains($location.path()) && !AuthenticationService.isLoggedIn())
 		{
@@ -410,8 +412,6 @@ app.controller('PrizesDeletedController', function (AuthenticationService, $scop
 app.controller('ManagePrizeController', function(AuthenticationService, FlashService, $scope, $upload, $rootScope, prize, FormPostingService, $route){
 	$scope.title = "Manage Prize ";
 	$scope.prize = prize.data;
-	
-
 
 	$scope.onFileSelect = function($files) {
 	//$files: an array of files selected, each file has name, size, and type.
@@ -423,7 +423,8 @@ app.controller('ManagePrizeController', function(AuthenticationService, FlashSer
 		        data: {myObj: $scope.myModelObj},
 		        file: file
 		      }).progress(function(evt) {
-		        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+		        $scope.percent = 'Uploaded: ' + parseInt(100.0 * evt.loaded / evt.total) + '%';
+		        $scope.apply();
 		      }).success(function(data, status, headers, config) {
 		        $scope.prize.image_name = data['image'];
 		      });
@@ -449,8 +450,6 @@ app.controller('AddPrizeController', function(AuthenticationService, FlashServic
 	$scope.button = "Add";
 	$scope.title = "Manage Prize ";
 	$scope.prize = prize.data;
-	//$scope.prize.image_name = "";
-	window.scope = $scope;
 
 	$scope.onFileSelect = function($files) {
 	//$files: an array of files selected, each file has name, size, and type.
@@ -462,7 +461,8 @@ app.controller('AddPrizeController', function(AuthenticationService, FlashServic
 		        data: {myObj: $scope.myModelObj},
 		        file: file
 		      }).progress(function(evt) {
-		        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+		        $scope.percent = 'percent: ' + parseInt(100.0 * evt.loaded / evt.total) + '%';
+		        console.log($scope);
 		      }).success(function(data, status, headers, config) {
 		        $scope.prize.image_name = data['image'];
 		      });
@@ -668,7 +668,6 @@ app.filter('sumByKey', function() {
 		if (typeof(data) === 'undefined' || typeof(key) === 'undefined') {
 			return 0;
 		}
-		console.log(data);
 		var sum = 0;
 
 		angular.forEach(data, function(d){
@@ -683,7 +682,6 @@ app.filter('sumByKeyTotal', function() {
 		if (typeof(data) === 'undefined' || typeof(key) === 'undefined') {
 			return 0;
 		}
-		console.log(data);
 		var sum = 0;
 
 		angular.forEach(data, function(d){

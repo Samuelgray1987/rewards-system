@@ -18,13 +18,16 @@
         
         <fieldset class="radius">
           <div class="row">
-            <div class="large-12 columns">
+            <div class="large-6 columns">
               <label for="file" >Change Image</label>
               <input type="file" ng-file-select="onFileSelect($files)" >
             </div>
+            <div class="large-6 columns">
+              <p class="lead" ng-show="percent">{{percent}}</p>
+            </div>
           </div>
         </fieldset>
-
+        
         <fieldset class="radius">
           <div class="row">
             <div class="large-12 columns">
